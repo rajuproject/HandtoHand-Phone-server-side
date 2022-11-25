@@ -35,10 +35,29 @@ async function run() {
   try {
     // const Assignment = client.db('Assignment').collection('service')
     const userCollection = client.db('Assignment').collection('user')
+    const allUserCollection = client.db('Assignment').collection('allUser')
     const catagories = client.db('Assignment-12').collection('phoneCatagories')
     const Iphone = client.db('Iphone').collection('service')
-    const Samsung = client.db('Samsung').collection('service')
-    const Xaomi = client.db('Xaomi').collection('service')
+    // const Samsung = client.db('Samsung').collection('service')
+    // const Xaomi = client.db('Xaomi').collection('service')
+
+
+
+
+    // log in all user 
+
+
+            app.post('/allUsers', async (req, res) => {
+            const user = req.body;
+            console.log(user);
+            const result = await allUserCollection.insertOne(user)
+            res.send(result);
+        });
+
+
+
+
+
 
 
 
