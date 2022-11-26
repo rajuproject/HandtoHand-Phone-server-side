@@ -19,9 +19,9 @@ app.use(express.json())
 
 
 
-// const uri = `mongodb+srv://${process.env.REACT_APP_USER_NAME}:${process.env.REACT_APP_USER_PASSWORD}@cluster0.egpfflf.mongodb.net/?retryWrites=true&w=majority`;
-const urI = "mongodb+srv://Assignment-12:cdUxsIkSdK86aLuY@cluster0.egpfflf.mongodb.net/?retryWrites=true&w=majority";
-const client = new MongoClient(urI, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
+  const uri = `mongodb+srv://${process.env.REACT_APP_USER_NAME}:${process.env.REACT_APP_USER_PASSWORD}@cluster0.egpfflf.mongodb.net/?retryWrites=true&w=majority`;
+// const urI = "mongodb+srv://Assignment-12:cdUxsIkSdK86aLuY@cluster0.egpfflf.mongodb.net/?retryWrites=true&w=majority";
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
 
 
@@ -95,6 +95,19 @@ async function run() {
     })
 
 
+
+    app.get('/jwt', async(req, res) =>{
+      const email = req.query.email;
+      const query = {email: email}
+      const user = await allUserCollection.findOne(query)
+      if(user){
+        const token = jwt.sign({email}, process.env.REACT_APP_ACCESS_TOKEN, {expiresIn: '1h'} )
+        return res.send({accessToken: token})
+      }
+      console.log(user)
+      res.status(403).send({accessToken: ''})
+
+    })
 
     // user booking 
 
