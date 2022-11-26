@@ -55,7 +55,14 @@ async function run() {
         });
 
 
+// all users 
 
+  app.get('/allUsers', async (req, res) => {
+            const query = {};
+            const cursor = allUserCollection.find(query);
+            const users = await cursor.toArray();
+            res.send(users);
+        });
 
 
 
@@ -80,16 +87,8 @@ async function run() {
 
     app.get('/iphone/:id', async (req, res) => {
       const id = req.params.id;
-
-
       const query = { id: id };
-
-
-
       const user = await Iphone.find(query).toArray();
-
-
-
 
       res.send(user);
     })
