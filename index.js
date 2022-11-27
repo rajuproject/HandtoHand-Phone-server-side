@@ -167,6 +167,19 @@ async function run() {
       res.send(result);
     });
 
+
+    // my orders 
+
+    app.get('/bookings/:id', async (req, res) => {
+      const id = req.params.id;
+      console.log(id)
+      const query = { email: id };
+      const user = await userCollection.find(query).toArray();
+
+      console.log(user)
+      res.send(user);
+    })
+
     
     app.post('/addProduct', async (req, res) => {
       const user = req.body;
