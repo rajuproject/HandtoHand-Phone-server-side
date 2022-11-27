@@ -180,9 +180,9 @@ async function run() {
       res.send(user);
     })
 
-    app.delete('/bookings/:id', async (req, res) => {
+    app.delete('/myProduct/:id', async (req, res) => {
       const {id} = req.params;     
-      const result = await userCollection.deleteOne({_id: ObjectId(id)});
+      const result = await Iphone.deleteOne({_id: ObjectId(id)});
      
       res.send(result);
     });
