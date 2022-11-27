@@ -135,7 +135,8 @@ async function run() {
 
     app.get('/iphone/:id', async (req, res) => {
       const id = req.params.id;
-      const query = { id: id };
+      console.log(id)
+      const query = { name: id };
       const user = await Iphone.find(query).toArray();
 
       console.log(user)
