@@ -153,7 +153,7 @@ async function run() {
         const token = jwt.sign({ email }, process.env.REACT_APP_ACCESS_TOKEN, { expiresIn: '1h' })
         return res.send({ accessToken: token })
       }
-      console.log(user)
+
       res.status(403).send({ accessToken: '' })
 
     })
@@ -172,13 +172,23 @@ async function run() {
 
     app.get('/bookings/:id', async (req, res) => {
       const id = req.params.id;
-      console.log(id)
+
       const query = { email: id };
       const user = await userCollection.find(query).toArray();
 
-      console.log(user)
+   
       res.send(user);
     })
+
+    app.delete('/bookings/:id', async (req, res) => {
+      const {id} = req.params;     
+      const result = await userCollection.deleteOne({_id: ObjectId(id)});
+     
+      res.send(result);
+    });
+
+
+
 
     
     app.post('/addProduct', async (req, res) => {
