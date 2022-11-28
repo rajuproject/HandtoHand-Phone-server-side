@@ -36,6 +36,9 @@ async function run() {
   try {
 
     const userCollection = client.db('Assignment').collection('user')
+
+    const advertised = client.db('Assignment').collection('advertised')
+
     const allUserCollection = client.db('Assignment').collection('allUser')
     const catagories = client.db('Assignment-12').collection('phoneCatagories')
     const Iphone = client.db('Iphone').collection('service')
@@ -93,7 +96,7 @@ async function run() {
       const email = req.params.email;
       const query = { email: email }
 
-     
+
       const users = await Iphone.find(query).toArray();
       res.send(users);
     });
@@ -106,10 +109,10 @@ async function run() {
 
       const filter = { _id: ObjectId(id) };
 
-console.log(filter)
+      console.log(filter)
 
       const user = req.body;
-     
+
 
       const option = { upsert: true };
 
@@ -117,7 +120,33 @@ console.log(filter)
         $set: user,
       }
 
-console.log(updatedUser)
+      console.log(updatedUser)
+
+      const result = await Iphone.updateOne(filter, updatedUser, option);
+      console.log(result)
+      res.send(result);
+    })
+
+// avdertise product add 
+
+    app.put('/myProduct/:id', async (req, res) => {
+      const id = req.params.id;
+
+
+      const filter = { _id: ObjectId(id) };
+
+      console.log(filter)
+
+      
+      const user = req.body;
+
+      const option = { upsert: true };
+
+      const updatedUser = {
+        $set:user
+      }
+
+      console.log(updatedUser)
 
       const result = await Iphone.updateOne(filter, updatedUser, option);
       console.log(result)
@@ -193,6 +222,31 @@ console.log(updatedUser)
       res.send(result);
     });
 
+    // advertised 
+
+
+    app.post('/advertised', async (req, res) => {
+      const user = req.body;
+
+      const result = await advertised.insertOne(user)
+      res.send(result);
+    });
+
+
+    // avertised get 
+
+
+    app.get('/advertised', async (req, res) => {
+      const query = {};
+      const cursor = advertised.find(query);
+
+      console.log(cursor)
+      const users = await cursor.toArray();
+      console.log(users)
+      res.send(users);
+    });
+
+
 
     // my orders 
 
@@ -204,6 +258,26 @@ console.log(updatedUser)
 
       res.send(user);
     })
+
+
+       // advertised get 
+
+    app.get('/advertise', async (req, res) => {
+    
+
+      const query = { advertise: "advertise" };
+
+      console.log(query)
+
+      const user = await Iphone.find(query).toArray();
+
+      console.log(user)
+
+      res.send(user);
+    })
+
+
+ 
 
     app.delete('/myProduct/:id', async (req, res) => {
       const { id } = req.params;
