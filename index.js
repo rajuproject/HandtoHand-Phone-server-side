@@ -68,25 +68,43 @@ async function run() {
 
 
     // admin check 
+    // app.get('/dashboard/allUsers/:email', async (req, res) => {
+    //   const email = req.params.email;
+    //   const query = { email: email }
+    //   const users = await allUserCollection.findOne(query);
+    //   // const users = await cursor.toArray();
+
+    //   res.send({ isAdmin: users?.option === 'admin' });
+
+    // });
+
     app.get('/dashboard/allUsers/:email', async (req, res) => {
       const email = req.params.email;
       const query = { email: email }
       const users = await allUserCollection.findOne(query);
+
+      if(users?.option === 'seller'){
+        res.send({isSeller})
+      }
+
+      if(users?.option === 'admin'){
+        res.send({isAdmin:users?.option === 'admin'})
+      }
       // const users = await cursor.toArray();
 
-      res.send({ isAdmin: users?.option === 'admin' });
+      // res.send({ isSeller: users?.option === 'seller' });
 
     });
 
     // seller check data 
 
-    app.get('/allUsers/:email', async (req, res) => {
-      const email = req.params.email;
-      const query = { email: email }
-      const cursor = allUserCollection.findOne(query);
-      const users = await cursor.toArray();
-      res.send({ isSeller: users?.option === 'seller' });
-    });
+    // app.get('/allUsers/:email', async (req, res) => {
+    //   const email = req.params.email;
+    //   const query = { email: email }
+    //   const cursor = allUserCollection.findOne(query);
+    //   const users = await cursor.toArray();
+    //   res.send({ isSeller: users?.option === 'seller' });
+    // });
 
 
     // my produc
