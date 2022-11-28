@@ -83,17 +83,25 @@ async function run() {
       const query = { email: email }
       const users = await allUserCollection.findOne(query);
 
-      if(users?.option === 'seller'){
-        res.send({isSeller})
-      }
 
-      if(users?.option === 'admin'){
-        res.send({isAdmin:users?.option === 'admin'})
-      }
-      // const users = await cursor.toArray();
+       res.send({isAdmin:users?.option === 'admin'})
+    
+    });
 
-      // res.send({ isSeller: users?.option === 'seller' });
 
+
+    app.get('/allSeller/:email', async (req, res) => {
+      const email = req.params.email;
+
+      const query = { email: email }
+
+      const users = await allUserCollection.findOne(query);
+
+
+console.log(users)
+
+       res.send({isSeller:users?.option === 'seller'})
+    
     });
 
     // seller check data 
@@ -147,29 +155,29 @@ async function run() {
 
 // avdertise product add 
 
-    // app.put('/myProduct/:id', async (req, res) => {
-    //   const id = req.params.id;
+    app.put('/myProduct/:id', async (req, res) => {
+      const id = req.params.id;
 
 
-    //   const filter = { _id: ObjectId(id) };
+      const filter = { _id: ObjectId(id) };
 
-    //   console.log(filter)
+      console.log(filter)
 
       
-    //   const user = req.body;
+      const user = req.body;
 
-    //   const option = { upsert: true };
+      const option = { upsert: true };
 
-    //   const updatedUser = {
-    //     $set:user
-    //   }
+      const updatedUser = {
+        $set:user
+      }
 
-    //   console.log(updatedUser)
+      console.log(updatedUser)
 
-    //   const result = await Iphone.updateOne(filter, updatedUser, option);
-    //   console.log(result)
-    //   res.send(result);
-    // })
+      const result = await Iphone.updateOne(filter, updatedUser, option);
+      console.log(result)
+      res.send(result);
+    })
 
 
 
@@ -254,15 +262,18 @@ async function run() {
     // avertised get 
 
 
-    // app.get('/advertised', async (req, res) => {
-    //   const query = {};
-    //   const cursor = advertised.find(query);
+    app.get('/advertised', async (req, res) => {
+      const query = {advertise: 'advertise'};
 
-    //   console.log(cursor)
-    //   const users = await cursor.toArray();
-    //   console.log(users)
-    //   res.send(users);
-    // });
+      
+      const cursor = Iphone.find(query);
+
+    
+      
+      const users = await cursor.toArray();
+      console.log(users)
+      res.send(users);
+    });
 
 
 
