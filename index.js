@@ -71,7 +71,7 @@ async function run() {
     app.get('/dashboard/allUsers/:email', async (req, res) => {
       const email = req.params.email;
       const query = { email: email }
-      const users = allUserCollection.findOne(query);
+      const users = await allUserCollection.findOne(query);
       // const users = await cursor.toArray();
 
       res.send({ isAdmin: users?.option === 'admin' });
@@ -129,29 +129,29 @@ async function run() {
 
 // avdertise product add 
 
-    app.put('/myProduct/:id', async (req, res) => {
-      const id = req.params.id;
+    // app.put('/myProduct/:id', async (req, res) => {
+    //   const id = req.params.id;
 
 
-      const filter = { _id: ObjectId(id) };
+    //   const filter = { _id: ObjectId(id) };
 
-      console.log(filter)
+    //   console.log(filter)
 
       
-      const user = req.body;
+    //   const user = req.body;
 
-      const option = { upsert: true };
+    //   const option = { upsert: true };
 
-      const updatedUser = {
-        $set:user
-      }
+    //   const updatedUser = {
+    //     $set:user
+    //   }
 
-      console.log(updatedUser)
+    //   console.log(updatedUser)
 
-      const result = await Iphone.updateOne(filter, updatedUser, option);
-      console.log(result)
-      res.send(result);
-    })
+    //   const result = await Iphone.updateOne(filter, updatedUser, option);
+    //   console.log(result)
+    //   res.send(result);
+    // })
 
 
 
@@ -236,15 +236,15 @@ async function run() {
     // avertised get 
 
 
-    app.get('/advertised', async (req, res) => {
-      const query = {};
-      const cursor = advertised.find(query);
+    // app.get('/advertised', async (req, res) => {
+    //   const query = {};
+    //   const cursor = advertised.find(query);
 
-      console.log(cursor)
-      const users = await cursor.toArray();
-      console.log(users)
-      res.send(users);
-    });
+    //   console.log(cursor)
+    //   const users = await cursor.toArray();
+    //   console.log(users)
+    //   res.send(users);
+    // });
 
 
 
@@ -254,7 +254,10 @@ async function run() {
       const id = req.params.id;
 
       const query = { email: id };
+
+ 
       const user = await userCollection.find(query).toArray();
+   
 
       res.send(user);
     })
@@ -262,19 +265,19 @@ async function run() {
 
        // advertised get 
 
-    app.get('/advertise', async (req, res) => {
+    // app.get('/advertise', async (req, res) => {
     
 
-      const query = { advertise: "advertise" };
+    //   const query = { advertise: "advertise" };
 
-      console.log(query)
+    //   console.log(query)
 
-      const user = await Iphone.find(query).toArray();
+    //   const user = await Iphone.find(query).toArray();
 
-      console.log(user)
+    //   console.log(user)
 
-      res.send(user);
-    })
+    //   res.send(user);
+    // })
 
 
  
