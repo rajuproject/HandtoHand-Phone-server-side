@@ -1,7 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 const jwt = require('jsonwebtoken')
-const { MongoClient, ServerApiVersion,ObjectId } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 
 require('dotenv').config()
@@ -64,25 +64,25 @@ async function run() {
     });
 
 
-// admin check 
+    // admin check 
     app.get('/dashboard/allUsers/:email', async (req, res) => {
       const email = req.params.email;
-      const query = { email:email}
-      const users = allUserCollection.findOne(query);      
+      const query = { email: email }
+      const users = allUserCollection.findOne(query);
       // const users = await cursor.toArray();
       console.log(users)
-      res.send({isAdmin: users?.option ==='admin'});
-    
+      res.send({ isAdmin: users?.option === 'admin' });
+
     });
 
     // seller check data 
 
     app.get('/allUsers/:email', async (req, res) => {
       const email = req.params.email;
-      const query = { email:email}
+      const query = { email: email }
       const cursor = allUserCollection.findOne(query);
       const users = await cursor.toArray();
-      res.send({isSeller: users?.option === 'seller'});
+      res.send({ isSeller: users?.option === 'seller' });
     });
 
 
@@ -91,10 +91,27 @@ async function run() {
 
     app.get('/myProduct/:email', async (req, res) => {
       const email = req.params.email;
-     const query = { email:email}
+      const query = { email: email }
       const users = await Iphone.find(query).toArray();
       res.send(users);
     });
+
+
+
+    app.put('/myProduct/:id', async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: ObjectId(id) };
+      const user = req.body;
+      const option = { upsert: true };
+      const updatedUser = {
+        $set: {
+        status:user.status
+        }
+      }
+      const result = await userCollection.updateOne(filter, updatedUser, option);
+      res.send(result);
+    })
+
 
 
 
@@ -103,19 +120,19 @@ async function run() {
 
     app.get('/allUsers/:email', async (req, res) => {
       const email = req.params.email;
-      const query = { email:email}
+      const query = { email: email }
       const cursor = allUserCollection.findOne(query);
       const users = await cursor.toArray();
-      res.send({isBuyer: users?.option === 'buyer'});
+      res.send({ isBuyer: users?.option === 'buyer' });
     });
 
 
 
 
     app.delete('/allUsers/:id', async (req, res) => {
-      const {id} = req.params;     
-      const result = await allUserCollection.deleteOne({_id: ObjectId(id)});
-     
+      const { id } = req.params;
+      const result = await allUserCollection.deleteOne({ _id: ObjectId(id) });
+
       res.send(result);
     });
 
@@ -176,21 +193,21 @@ async function run() {
       const query = { email: id };
       const user = await userCollection.find(query).toArray();
 
-   
+
       res.send(user);
     })
 
     app.delete('/myProduct/:id', async (req, res) => {
-      const {id} = req.params;     
-      const result = await Iphone.deleteOne({_id: ObjectId(id)});
-     
+      const { id } = req.params;
+      const result = await Iphone.deleteOne({ _id: ObjectId(id) });
+
       res.send(result);
     });
 
 
 
 
-    
+
     app.post('/addProduct', async (req, res) => {
       const user = req.body;
       const result = await Iphone.insertOne(user)
