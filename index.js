@@ -21,7 +21,7 @@ app.use(express.json())
 
 
 const uri = `mongodb+srv://${process.env.REACT_APP_USER_NAME}:${process.env.REACT_APP_USER_PASSWORD}@cluster0.egpfflf.mongodb.net/?retryWrites=true&w=majority`;
-// const urI = "mongodb+srv://Assignment-12:cdUxsIkSdK86aLuY@cluster0.egpfflf.mongodb.net/?retryWrites=true&w=majority";
+
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
 
@@ -50,9 +50,16 @@ async function run() {
     // log in all user 
 
 
-    app.post('/allUsers', async (req, res) => {
+    app.post('/allusers', async (req, res) => {
       const user = req.body
+
+      
+
+
       const result = await allUserCollection.insertOne(user)
+
+    
+
       res.send(result);
     });
 
@@ -67,21 +74,14 @@ async function run() {
     });
 
 
-    // admin check 
-    // app.get('/dashboard/allUsers/:email', async (req, res) => {
-    //   const email = req.params.email;
-    //   const query = { email: email }
-    //   const users = await allUserCollection.findOne(query);
-    //   // const users = await cursor.toArray();
 
-    //   res.send({ isAdmin: users?.option === 'admin' });
-
-    // });
 
     app.get('/dashboard/allUsers/:email', async (req, res) => {
       const email = req.params.email;
       const query = { email: email }
       const users = await allUserCollection.findOne(query);
+
+      
 
 
        res.send({isAdmin:users?.option === 'admin'})
@@ -92,30 +92,14 @@ async function run() {
 
     app.get('/allSeller/:email', async (req, res) => {
       const email = req.params.email;
+     const query = { email: email }
+     const users = await allUserCollection.findOne(query);
 
-      const query = { email: email }
-
-      const users = await allUserCollection.findOne(query);
-
-
-console.log(users)
-
-       res.send({isSeller:users?.option === 'seller'})
+ 
+       res.send({isSeller:users?.option === 'Seller'})
     
     });
 
-    // seller check data 
-
-    // app.get('/allUsers/:email', async (req, res) => {
-    //   const email = req.params.email;
-    //   const query = { email: email }
-    //   const cursor = allUserCollection.findOne(query);
-    //   const users = await cursor.toArray();
-    //   res.send({ isSeller: users?.option === 'seller' });
-    // });
-
-
-    // my produc
 
 
     app.get('/myProduct/:email', async (req, res) => {
@@ -135,7 +119,7 @@ console.log(users)
 
       const filter = { _id: ObjectId(id) };
 
-      console.log(filter)
+   
 
       const user = req.body;
 
@@ -178,20 +162,6 @@ console.log(users)
       console.log(result)
       res.send(result);
     })
-
-
-
-
-
-    // buyer chceck 
-
-    app.get('/allUsers/:email', async (req, res) => {
-      const email = req.params.email;
-      const query = { email: email }
-      const cursor = allUserCollection.findOne(query);
-      const users = await cursor.toArray();
-      res.send({ isBuyer: users?.option === 'buyer' });
-    });
 
 
 
@@ -263,10 +233,12 @@ console.log(users)
 
 
     app.get('/advertised', async (req, res) => {
-      const query = {advertise: 'advertise'};
+      const query = {advertise: 'advertise', status:"Available"};
 
       
       const cursor = Iphone.find(query);
+
+      console.log(query)
 
     
       
@@ -290,23 +262,6 @@ console.log(users)
 
       res.send(user);
     })
-
-
-       // advertised get 
-
-    // app.get('/advertise', async (req, res) => {
-    
-
-    //   const query = { advertise: "advertise" };
-
-    //   console.log(query)
-
-    //   const user = await Iphone.find(query).toArray();
-
-    //   console.log(user)
-
-    //   res.send(user);
-    // })
 
 
  
@@ -334,26 +289,6 @@ console.log(users)
 
 
 
-    // app.put('/user/:email', async(req, res)=>{
-    //   const email = req.params.email
-
-    //   const user = req.body
-    //   const filter = {email:email}
-    //   const options = {upsert: true}
-    //   const updateDoc ={
-    //       $set: user,
-    //   }
-    //   const result = await Assignment.updateOne(filter, updateDoc, options)
-    //   console.log(result)
-
-    //   const token = jwt.sign(user, process.env.REACT_APP_ACCESS_TOKEN, {
-    //     expiresIn: '4D',
-    //   })
-    //   res.send({result, token})
-    // })
-
-
-
 
     console.log('Database Connected...')
   } finally {
@@ -371,48 +306,3 @@ app.listen(port, () => {
 })
 
 
-  //  app.get('/users', async (req, res) => {
-  //           const query = {};
-  //           const cursor = userCollection.find(query);
-  //           const users = await cursor.toArray();
-  //           res.send(users);
-  //       });
-
-  //       app.get('/users/:id', async (req, res) => {
-  //           const id = req.params.id;
-  //           const query = { _id: ObjectId(id) };
-  //           const user = await userCollection.findOne(query);
-  //           res.send(user);
-  //       })
-
-  //       app.post('/users', async (req, res) => {
-  //           const user = req.body;
-  //           console.log(user);
-  //           const result = await userCollection.insertOne(user)
-  //           res.send(result);
-  //       });
-
-  //       app.put('/users/:id', async (req, res) => {
-  //           const id = req.params.id;
-  //           const filter = { _id: ObjectId(id) };
-  //           const user = req.body;
-  //           const option = {upsert: true};
-  //           const updatedUser = {
-  //               $set: {
-  //                   name: user.name,
-  //                   address: user.address,
-  //                   email: user.email
-  //               }
-  //           }
-  //           const result = await userCollection.updateOne(filter, updatedUser, option);
-  //           res.send(result);
-  //       })
-
-  //       app.delete('/users/:id', async (req, res) => {
-  //           const id = req.params.id;
-  //           // console.log('trying to delete', id);
-  //           const query = { _id: ObjectId(id) }
-  //           const result = await userCollection.deleteOne(query);
-  //           console.log(result);
-  //           res.send(result);
-  //       });
